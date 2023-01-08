@@ -2,14 +2,18 @@
   import type { EntryData } from "../../data/get-data";
 
   export let entry: EntryData;
+
+  $: metadata = entry.metadata;
 </script>
 
 <section>
-  <time class="datetime" datetime="{entry.datetime}" title="{entry.formattedDate}">
-    <span class="year"       >{ entry.year                  }</span>
-    <span class="month-day"  >{ entry.month }{ entry.day    }</span>
-    <span class="hour-minute">{ entry.hour  }{ entry.minute }</span>
-  </time>
+  <div class="datetime">
+    <time datetime="{metadata.datetime}" title="{metadata.formattedDate}">
+      <span class="year"       >{ metadata.year                  }</span>
+      <span class="month-day"  >{ metadata.month }{ metadata.day    }</span>
+      <span class="hour-minute">{ metadata.hour  }{ metadata.minute }</span>
+    </time>
+  </div>
   <div class="content">
     <p>
       <i>
@@ -26,33 +30,64 @@
 
 <style>
   section {
-    display: flex;
-    justify-content: space-between;
-  }
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+      "datetime content"
+      "datetime note";
 
-  section > * {
-    flex-grow: 1;
-    flex-basis: 0;
+    margin: 0.5em;
+
+    padding: 1em;
+    border: 1px solid rgb(0, 0, 0);
   }
 
   .datetime {
+    grid-area: datetime;
     display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid white;
   }
 
-  .datetime > span {
-    background-color: black;
-    color: white;
+  time {
+    display: flex;
+    flex-direction: column;
+
+    padding: 1em;
+    color: black;
+    border: 1px solid black;
   }
 
   .content {
-    border-bottom: 1px solid black;
     text-transform: lowercase;
+    flex-grow: 1;
+    flex-basis: 0;
+
+    padding-left: 1em;
+    padding-top: 1em;
+
+    font-style: italic;
+
+    grid-area: content;
   }
 
   .note {
-    text-align: right;
-    border-bottom: 1px solid black;
+    text-align: left;
+    flex-grow: 1;
+    flex-basis: 0;
+
+    padding-left: 1em;
+    padding-top: 1em;
+
+    grid-area: note;
+
+    opacity: 0.5;
+  }
+
+  .note p::before {
+    content: "[ ";
+  }
+
+  .note p::after {
+    content: " ]";
   }
 </style>

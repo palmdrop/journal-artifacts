@@ -1,17 +1,24 @@
-const accessToken = import.meta.env.VITE_DROPBOX_ACCESS_TOKEN;
+// const accessToken = import.meta.env.VITE_DROPBOX_ACCESS_TOKEN;
 const filePath = import.meta.env.VITE_DROPBOX_FILE_PATH;
 
-//                      #  (yyyy   -MM     -dd     Thh     :mm     )(entry )  (footnote)
-const entryParseRegex = /# ([\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2})([^\[]*)\[([^\]]*)\]/g;
+//                      #  (yyyy   -MM     -dd     Thh     :mm               )(entry )  (footnote)
+const entryParseRegex = /# (([\d]{4})-([\d]{2})-([\d]{2})T([\d]{2}):([\d]{2}))([^\[]*)\[([^\]]*)\]/g;
 
 export type EntryData = {
   datetime: string,
+  formattedDate: string,
+  year: string,
+  month: string,
+  day: string,
+  hour: string,
+  minute: string,
   content: string,
   note: string
 }
 
 export const getDataLocalTest = async () => {
   try {
+    /*
     const response = await fetch('https://content.dropboxapi.com/2/files/download', {
       method: 'POST',
       mode: 'cors',
@@ -21,6 +28,13 @@ export const getDataLocalTest = async () => {
           path: filePath
         })
       }
+    });
+    */
+
+    // TODO: fetch data using actual dropbox API
+    const response = await fetch(filePath, {
+      method: 'GET',
+      mode: 'cors',
     });
 
     const data = await response.text();
@@ -40,12 +54,25 @@ const processMatch = (match: RegExpMatchArray) => {
   const [
     ,
     datetime,
+    year,
+    month,
+    day,
+    hour,
+    minute,
     content,
     note
   ] = match;
 
+  const formattedDate = datetime.replace('T', ' ');
+
   return {
     datetime,
+    formattedDate,
+    year,
+    month,
+    day,
+    hour,
+    minute,
     content,
     note
   };

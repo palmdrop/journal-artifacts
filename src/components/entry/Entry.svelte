@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { EntryData } from "../../data/get-data";
+  import SvelteMarkdown from "svelte-markdown";
 
   export let entry: EntryData;
   export let selected: boolean; 
@@ -16,11 +17,9 @@
     </time>
   </div>
   <div class="content">
-    <p>
-      <i>
-      { entry.content }
-      </i>
-    </p>
+    <SvelteMarkdown
+      source={ entry.content }
+    />
   </div>
   <div class="note">
     <p>
@@ -52,6 +51,9 @@
   .datetime {
     grid-area: datetime;
     display: flex;
+
+    justify-self: center;
+    align-self: center;
   }
 
   time {
@@ -68,10 +70,9 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    padding-left: 1em;
-    padding-top: 1em;
-
-    font-style: italic;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    font-size: 1.5rem;
 
     grid-area: content;
   }
@@ -89,6 +90,7 @@
     opacity: 0.5;
   }
 
+  /*
   .note p::before {
     content: "[ ";
   }
@@ -96,4 +98,5 @@
   .note p::after {
     content: " ]";
   }
+  */
 </style>

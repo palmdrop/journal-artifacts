@@ -38,13 +38,19 @@
 
   let selectedIndex = -1;
   const anchorOffset = 0.4;
-  const anchorSelectionDistance = 30;
+  const anchorSelectionDistance = 20;
 
   // Updates the index and the URL hash on scroll
-  // TODO: to avoid flickering, favor the element in the MOVEMENT direction! i.e do not flicker back to previous element
+  let previousTop = 0;
   const onScroll = throttle(() => {
     const top = window.pageYOffset;
-    for(let i = 0; i < entryElements.length; i++) {
+    // true = down, false = up
+    const direction = (top - previousTop) > 0;
+    for(
+      let i = (direction ? 0 : entryElements.length - 1); 
+      (direction ? i < entryElements.length : i >= 0); 
+      (direction ? i++ : i--)
+    ) {
       const element = entryElements[i];
       const distance = Math.abs(top - element.offsetTop);
       if(distance < anchorSelectionDistance && selectedIndex !== i) {
@@ -53,6 +59,8 @@
         break;
       }
     }
+
+    previousTop = top;
   }, 5);
 </script>
 
@@ -100,6 +108,9 @@
     justify-content: center;
 
     background-color: #ececec;
+
+    padding-top: var(--anchorOffset);
+    padding-bottom: calc(90vh - var(--anchorOffset));
   }
 
   .offset {
@@ -118,9 +129,15 @@
     background-color: #ececec;
 
     position: fixed;
+    bottom: 0;
+    left: 0;
   }
 
   a:focus {
     outline: unset;
+  }
+
+  :global(em) {
+    font-style: italic;
   }
 </style>

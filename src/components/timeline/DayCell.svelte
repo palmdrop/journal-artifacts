@@ -40,8 +40,8 @@
 
   .day {
     display: block;
-    width: 1rem;
-    height: 1rem;
+    width: 100%;
+    height: 100%;
 
     background-color: black;
     opacity: var(--opacity);

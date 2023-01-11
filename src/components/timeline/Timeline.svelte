@@ -32,7 +32,7 @@
     {/each}
   </ol>
   { #if datetime.length !== 0 }
-  <time>
+  <time class="date">
     { datetime }
   </time> 
   { /if }
@@ -40,13 +40,30 @@
 
 <style>
   .timeline {
-    border: 1px solid black;
-
     padding: 1em;
   }
 
   ol {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+
+    width: 170px;
+    height: 170px;
+
+    padding: 0.4rem;
+    border: 1px solid black;
+  }
+
+  .date {
+    display: block;
+    margin-top: 0.2em;
+    padding: 0.4rem;
+    font-size: 1.5rem;
+    font-family: monospace;
+
+    border: 1px solid black;
+
+    text-align: center;
   }
 </style>

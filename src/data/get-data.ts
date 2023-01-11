@@ -7,6 +7,13 @@ const filePath = import.meta.env.VITE_DROPBOX_FILE_PATH;
 //                      #  (yyyy   -MM     -dd     Thh     :mm               )(entry )  (footnote)
 const entryParseRegex = /(([\d]{4})-([\d]{2})-([\d]{2})T([\d]{2}):([\d]{2}))([^\[]*)\[([^\]]*)\]/g;
 
+export type Day = {
+  count: number,
+  entryIndices: number[],
+  datetime: string
+};
+
+
 export type EntryData = {
   metadata: {
     datetime: string,
@@ -74,19 +81,32 @@ const processData = (data: string) => {
   const firstDate = entries.at(0).metadata.datetime;
   const lastDate = entries.at(-1).metadata.datetime;
 
-  const numberOfDays = getTimeDifference(
+  const numberOfDays = 1 + getTimeDifference(
     firstDate, lastDate, 'days'
   );
 
-  const timeline = Array<number>(numberOfDays + 1).fill(0);
+  const timeline: Day[] = []
+  for(let i = 0; i < numberOfDays; i++) {
+    timeline.push({
+      count: 0,
+      entryIndices: [],
+      datetime: ''
+    });
+  }
 
-  entries.forEach(entry => {
+  entries.forEach((entry, i) => {
     const dayIndex = getTimeDifference(
       entry.metadata.datetime, lastDate, 'days'
     );
 
     entry.dayIndex = dayIndex;
-    timeline[dayIndex]++;
+    const day = timeline[dayIndex];
+    day.count++;
+    day.entryIndices.push(i);
+
+    if(day.datetime === '') {
+      day.datetime = entry.metadata.datetime.split('T')[0];
+    }
   });
 
   return {

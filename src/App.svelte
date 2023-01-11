@@ -1,45 +1,90 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import throttle from 'lodash.throttle';
   import Entry from './components/entry/Entry.svelte';
   import Timeline from './components/timeline/Timeline.svelte';
-  import { getDataLocalTest, type EntryData } from './data/get-data';
+  import { getDataLocalTest, type Day, type EntryData } from './data/get-data';
 
   let entries: EntryData[] = [];
-  let numberOfDays: number = 0;
-  let timeline: number[] = [];
+  let timeline: Day[] = [];
 
-  let selectedEntry: EntryData | undefined = undefined;
+  const entryElements: HTMLElement[] = Array<HTMLElement>(entries.length);
 
   onMount(() => {
+    // Fetches page data
+    // TODO: pagination will be necessary as data grows!
     getDataLocalTest()
       .then(data => {
         entries = data.entries;
-        numberOfDays = data.numberOfDays;
         timeline = data.timeline;
       });
+
+    // Listens to hash changes elsewhere (such as the timeline) and updates the index accordingly 
+    const onHashChange = () => {
+      try {
+        const index = Number(location.hash.slice(1));
+        selectedIndex = index;
+      } catch (error) {
+        return;
+      }
+    };
+
+    window.addEventListener('hashchange', onHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', onHashChange);
+    }
   });
+
+  let selectedIndex = -1;
+  const anchorOffset = 0.4;
+  const anchorSelectionDistance = 30;
+
+  // Updates the index and the URL hash on scroll
+  // TODO: to avoid flickering, favor the element in the MOVEMENT direction! i.e do not flicker back to previous element
+  const onScroll = throttle(() => {
+    const top = window.pageYOffset;
+    for(let i = 0; i < entryElements.length; i++) {
+      const element = entryElements[i];
+      const distance = Math.abs(top - element.offsetTop);
+      if(distance < anchorSelectionDistance && selectedIndex !== i) {
+        selectedIndex = i;
+        history.pushState(null, null, "#" + i);
+        break;
+      }
+    }
+  }, 5);
 </script>
+
+<svelte:window
+  on:scroll={onScroll}
+/>
 
 <aside>
   <Timeline
     { timeline }
-    selectedDay={selectedEntry ? selectedEntry.dayIndex : undefined}
+    { selectedIndex }
   />
 </aside>
-<main>
+<main
+  style="
+    --anchorOffset: {100 * anchorOffset}vh;
+  "
+>
   <ol>
-    { #each entries as entry, i }
-    <li id={"" + entry.dayIndex + "-" + i}>
+    { #each entries as entry, i (entry.metadata.datetime)}
+    <li 
+      bind:this={entryElements[i]}
+      id="{"" + i}"
+      class="offset"
+    >
       <a 
-        id="{entry.metadata.datetime}"
-        href="#{entry.metadata.datetime}"
+        href="#{i}"
         draggable="false"
-        on:click={() => {
-          selectedEntry = entry;
-        }}
       >
         <Entry
           { entry }  
+          selected={selectedIndex === i}
         />
       </a>
     </li>
@@ -57,11 +102,15 @@
     background-color: #ececec;
   }
 
+  .offset {
+    margin-top: calc(var(--anchorOffset) * -1.0);
+    padding-top: var(--anchorOffset);
+  }
+
   ol {
     max-width: 700px;
-    /*
-    list-style: decimal-leading-zero;
-    */
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   aside {
@@ -72,6 +121,6 @@
   }
 
   a:focus {
-    outline: 1px solid black;
+    outline: unset;
   }
 </style>

@@ -2,11 +2,12 @@
   import type { EntryData } from "../../data/get-data";
 
   export let entry: EntryData;
+  export let selected: boolean; 
 
   $: metadata = entry.metadata;
 </script>
 
-<section>
+<section class:selected>
   <div class="datetime">
     <time datetime="{metadata.datetime}" title="{metadata.formattedDate}">
       <span class="year"       >{ metadata.year                  }</span>
@@ -41,6 +42,11 @@
 
     padding: 1em;
     border: 1px solid rgb(0, 0, 0);
+  }
+
+  .selected {
+    border: 1px solid rgb(148, 253, 0);
+    outline: 5px solid rgb(148, 253, 0);
   }
 
   .datetime {

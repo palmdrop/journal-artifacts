@@ -19,6 +19,8 @@
   style="
     --opacity: {Math.min(count / maxCount, 1)};
   "
+  class:selected
+  class:non-empty={day.count > 0}
 >
   { #if count }
     <a 
@@ -34,8 +36,13 @@
 
 <style>
   time {
-    border: 1px solid black;
     margin: 0.1rem;
+  }
+
+  .non-empty {
+    /*
+    border: 1px solid var(--fg);
+    */
   }
 
   .day {
@@ -43,11 +50,16 @@
     width: 100%;
     height: 100%;
 
-    background-color: black;
+    background-color: var(--fg);
     opacity: var(--opacity);
   }
 
-  .selected {
-    background-color: green;
+  time.selected {
+    border: unset;
+  }
+
+  a.selected {
+    background-color: var(--accent);
+    box-shadow: 0px 0px 20px 10px var(--accent);
   }
 </style>

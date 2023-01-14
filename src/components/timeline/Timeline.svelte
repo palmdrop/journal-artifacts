@@ -46,23 +46,22 @@
   ol {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-columns: repeat(7, 1fr);
 
     width: 170px;
     height: 170px;
 
     padding: 0.4rem;
-    border: 1px solid black;
   }
 
   .date {
     display: block;
-    margin-top: 0.2em;
-    padding: 0.4rem;
+    padding: 0.3rem;
+    margin: 0.5rem;
     font-size: 1.5rem;
-    font-family: monospace;
+    font-family: var(--font-mono);
 
-    border: 1px solid black;
+    background-color: var(--fg);
+    color: var(--bg);
 
     text-align: center;
   }

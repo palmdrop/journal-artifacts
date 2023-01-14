@@ -32,20 +32,16 @@
   section {
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr auto;
     grid-template-areas: 
       "datetime content"
       "datetime note";
 
     margin: 0.5em;
 
-    padding: 1em;
-    border: 1px solid rgb(0, 0, 0);
-  }
+    padding: 2em;
 
-  .selected {
-    border: 1px solid rgb(148, 253, 0);
-    outline: 5px solid rgb(148, 253, 0);
+    transition: 0.3s;
   }
 
   .datetime {
@@ -54,6 +50,19 @@
 
     justify-self: center;
     align-self: center;
+
+    background-color: var(--fg);
+    color: var(--bg);
+
+    font-family: var(--font-mono);
+    margin-right: 2rem;
+  }
+
+  .selected .datetime {
+    background-color: var(--accent);
+    color: var(--fg);
+
+    box-shadow: 0px 0px 30px 10px var(--accent);
   }
 
   time {
@@ -61,8 +70,6 @@
     flex-direction: column;
 
     padding: 1em;
-    color: black;
-    border: 1px solid black;
   }
 
   .content {
@@ -70,11 +77,11 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    padding-left: 1rem;
-    padding-top: 1rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
 
     grid-area: content;
+
+    text-shadow: 0px 0px 3px var(--bg);
   }
 
   .note {
@@ -82,21 +89,12 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    padding-left: 1em;
     padding-top: 1em;
 
     grid-area: note;
 
-    opacity: 0.5;
+    text-transform: lowercase;
+    font-size: 1.1rem;
+    font-family: var(--font-mono);
   }
-
-  /*
-  .note p::before {
-    content: "[ ";
-  }
-
-  .note p::after {
-    content: " ]";
-  }
-  */
 </style>

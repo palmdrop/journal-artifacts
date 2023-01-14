@@ -12,6 +12,7 @@ const dateOrStringToTime = (date: Date | string) => {
     : date.valueOf();
 }
 
+// TODO: this is not reliable, does not take timezone or daylight savings into account!?
 export const getTimeDifference = (date1: Date | string, date2: Date | string, time: keyof typeof times) => {
   const differenceInMs = dateOrStringToTime(date2) - dateOrStringToTime(date1);
   const dividerInMs = times[time];

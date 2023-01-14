@@ -21,15 +21,22 @@
   const anchorSelectionDistance = 20;
 
   // For animation
-  const animationScrollSpeed = 0.2;
+  const animationScrollSpeed = 0.00000002;
   const animationTimeSpeed = 0.07;
   const minTimeDelta = 0.001;
+
+  const getTimeFromIndex = (index: number) => {
+    if(index < 0 || index >= entries.length) return 0;
+    return new Date(
+      entries[index].metadata.datetime
+    ).getTime() * animationScrollSpeed;
+  }
 
   // Initial time
   let time = -1;
 
   // The time goal is reactive, and depends on the current selected entry
-  $: timeGoal = selectedIndex * animationScrollSpeed;
+  $: timeGoal = getTimeFromIndex(selectedIndex);
 
   // Used to determine if the goal has changed
   let previousTimeGoal = timeGoal;
@@ -41,17 +48,16 @@
       .then(data => {
         entries = data.entries;
         timeline = data.timeline;
+
+        const index = Number(location.hash.slice(1));
+        selectedIndex = index;
+      }).catch(() => {
+        selectedIndex = entries.length - 1;
+      }).finally(() => {
+        time = getTimeFromIndex(selectedIndex);
+        timeGoal = time;
       });
 
-    try {
-      const index = Number(location.hash.slice(1));
-      selectedIndex = index;
-    } catch (error) {
-      selectedIndex = entries.length - 1;
-    }
-
-    time = selectedIndex * animationScrollSpeed;
-    timeGoal = time;
 
     // Listens to hash changes elsewhere (such as the timeline) and updates the index accordingly 
     const onHashChange = () => {
@@ -134,12 +140,15 @@
   on:scroll={onScroll}
 />
 
+<!--
 <aside>
   <Timeline
     { timeline }
     { selectedIndex }
   />
+  <span style="color: white;">{time}</span>
 </aside>
+-->
 <main
   style="
     --anchorOffset: {100 * anchorOffset}vh;
@@ -178,9 +187,15 @@
 
 <style>
   :root {
+    /*
     --bg: rgb(7, 15, 12);
     --fg: #e5eedc;
     --accent: #1cfb45;
+    --highlight: #96edb9;
+    */
+    --bg: rgb(8, 9, 9);
+    --fg: #e8ede4;
+    --accent: #35ef73;
     --highlight: #96edb9;
 
     --font-primary: monospace;
@@ -213,7 +228,7 @@
     display: flex;
     flex-direction: column-reverse;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
 
     z-index: 1;
   }
@@ -238,7 +253,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-10%, -50%);
 
     height: 80vh;
     width: 40vh;

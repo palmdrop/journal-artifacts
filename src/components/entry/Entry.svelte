@@ -42,6 +42,8 @@
     padding: 2em;
 
     transition: 0.3s;
+
+    position: relative;
   }
 
   .datetime {

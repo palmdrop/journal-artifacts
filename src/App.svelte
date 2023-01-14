@@ -193,7 +193,7 @@
     --accent: #1cfb45;
     --highlight: #96edb9;
     */
-    --bg: rgb(8, 9, 9);
+    --bg: rgb(0, 0, 0);
     --fg: #e8ede4;
     --accent: #35ef73;
     --highlight: #96edb9;

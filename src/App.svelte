@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import throttle from 'lodash.throttle';
   import Entry from './components/entry/Entry.svelte';
-  import { getDataLocalTest, type Day, type EntryData } from './data/get-data';
+  import { getData, type Day, type EntryData } from './data/get-data';
     
   import core from './assets/substrate/core-full.json';
   import ProgramRenderer from './modules/substrates/src/components/substrate/ProgramRenderer.svelte';
@@ -40,18 +40,27 @@
   // Used to determine if the goal has changed
   let previousTimeGoal = timeGoal;
 
+  let fetchStatus: 'idle'  | 'pending' | 'successful' | 'failed' = 'idle';
   onMount(() => {
     // Fetches page data
-    // TODO: pagination will be necessary as data grows!
-    getDataLocalTest()
+    // pagination will be necessary as data grows!
+    fetchStatus = 'pending';
+    getData()
       .then(data => {
         entries = data.entries;
         timeline = data.timeline;
-
+        fetchStatus = 'successful';
+      })
+      .then(() => {
         const index = Number(location.hash.slice(1));
         selectedIndex = index;
-      }).catch(() => {
+      })
+      .catch(() => {
         selectedIndex = entries.length - 1;
+
+        if(!entries) {
+          fetchStatus = 'failed';
+        }
       }).finally(() => {
         time = getTimeFromIndex(selectedIndex);
         timeGoal = time;
@@ -174,6 +183,11 @@
       />
     </div>
     <span class="continued">***</span>
+    { #if ['idle', 'pending'].includes(fetchStatus) }
+      <span class="message">[Loading...]</span>
+    { :else if fetchStatus === 'failed' }
+      <span class="message">[Failed loading. Refresh to try again.]</span>
+    { /if }
     <ol>
       { #each entries as entry, i (entry.metadata.datetime)}
       <li 
@@ -196,22 +210,24 @@
     <span class="continued">***</span>
   </main>
   <footer>
-      <span>by:</span> 
-      <a 
-        href="https://palmdrop.site"
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        palmdrop
-      </a>
-      <span>font:</span>
-      <a 
-        href="https://velvetyne.fr/fonts/sligoil/"
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        Sligoil by Ariel Martín Pérez (Velvetyne Type Foundry)
-      </a>
+    <span>by:</span> 
+    <a 
+      href="https://palmdrop.site"
+      target="_blank"
+      rel="noreferrer noopener"
+      draggable={false}
+    >
+      palmdrop
+    </a>
+    <span>font:</span>
+    <a 
+      href="https://velvetyne.fr/fonts/sligoil/"
+      target="_blank"
+      rel="noreferrer noopener"
+      draggable={false}
+    >
+      Sligoil by Ariel Martín Pérez (Velvetyne Type Foundry)
+    </a>
   </footer>
 </div>
 
@@ -258,7 +274,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3;
 
     background-color: var(--fg);
     color: var(--bg);
@@ -272,9 +288,17 @@
   .continued {
     font-size: 3em;
     color: var(--fg);
-    z-index: 1;
+    z-index: 2;
 
     padding: 2em 0em;
+
+    text-shadow: var(--text-shadow);
+  }
+
+  .message {
+    font-size: 2em;
+    color: var(--fg);
+    z-index: 2;
 
     text-shadow: var(--text-shadow);
   }
@@ -298,6 +322,7 @@
     color: var(--fg);
     width: 100%;
     max-width: 1300px;
+    min-height: 100vh;
 
     border-left: 1px solid var(--fg);
     border-right: 1px solid var(--fg);
@@ -367,7 +392,7 @@
     z-index: 3;
     background-color: var(--bg);
 
-    border-top: 1px solid var(--fg);
+    border: 1px solid var(--fg);
   }
 
   footer a {

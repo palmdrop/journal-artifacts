@@ -304,7 +304,7 @@
   }
 
   h1 {
-    font-size: 1em;
+    font-size: 1.13em;
     text-align: left;
     font-style: normal;
   }
@@ -348,7 +348,7 @@
     background-color: var(--fg);
     color: var(--bg);
 
-    font-size: 1em;
+    font-size: 1.13em;
     z-index: 4;
     text-align: right;
 

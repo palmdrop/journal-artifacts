@@ -80,7 +80,7 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    font-size: 1.9em;
+    font-size: 1.6em;
 
     grid-area: content;
 

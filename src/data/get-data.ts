@@ -1,7 +1,8 @@
 import { getTimeDifference } from "../tools/date";
-import { data } from "./test-data";
+// import { data } from "./test-data";
 
-const filePath = 'https://artifacts-test.hypervivid.pages.dev/api/artifacts';
+// const filePath = 'https://artifacts-test.hypervivid.pages.dev/api/artifacts';
+const filePath = 'https://palmdrop.site/api/artifacts';
 
 //                      #  (yyyy   -MM     -dd     Thh     :mm               )(entry )  (footnote)
 const entryParseRegex = /(([\d]{4})-([\d]{2})-([\d]{2})T([\d]{2}):([\d]{2}))([^\[]*)\[([^\]]*)\]/g;

@@ -258,6 +258,10 @@
     font-style: italic;
   }
 
+  :global(strong) {
+    font-weight: bold;
+  }
+
   .app {
     font-family: var(--font-primary);
     font-size: clamp(0.75rem, 2vw, 1.35rem);

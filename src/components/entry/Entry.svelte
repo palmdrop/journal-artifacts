@@ -44,12 +44,6 @@
     transition: 0.3s;
 
     position: relative;
-
-    --text-shadow: 
-      0.06em 0.06em 0.08em var(--bg),
-      -0.06em 0.06em 0.08em var(--bg),
-      0.06em -0.06em 0.08em var(--bg),
-      -0.06em -0.06em 0.08em var(--bg);
   }
 
   .datetime {

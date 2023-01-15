@@ -230,6 +230,12 @@
 
     --font-primary: Sligoil;
     --font-mono: Sligoil;
+
+    --text-shadow: 
+      0.06em 0.06em 0.08em var(--bg),
+      -0.06em 0.06em 0.08em var(--bg),
+      0.06em -0.06em 0.08em var(--bg),
+      -0.06em -0.06em 0.08em var(--bg);
   }
 
   :global(em) {
@@ -266,9 +272,11 @@
   .continued {
     font-size: 3em;
     color: var(--fg);
-    z-index: 2;
+    z-index: 1;
 
     padding: 2em 0em;
+
+    text-shadow: var(--text-shadow);
   }
 
   h1 {

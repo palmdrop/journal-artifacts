@@ -392,7 +392,7 @@
     z-index: 3;
     background-color: var(--bg);
 
-    border: 1px solid var(--fg);
+    border-top: 1px solid var(--fg);
   }
 
   footer a {

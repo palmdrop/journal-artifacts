@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import throttle from 'lodash.throttle';
   import Entry from './components/entry/Entry.svelte';
-  import Timeline from './components/timeline/Timeline.svelte';
   import { getDataLocalTest, type Day, type EntryData } from './data/get-data';
     
   import core from './assets/substrate/core-full.json';
@@ -140,50 +139,81 @@
   on:scroll={onScroll}
 />
 
-<!--
-<aside>
-  <Timeline
-    { timeline }
-    { selectedIndex }
-  />
-  <span style="color: white;">{time}</span>
-</aside>
--->
-<main
-  style="
-    --anchorOffset: {100 * anchorOffset}vh;
-  "
->
-  <div class="render-core">
-    <ProgramRenderer 
-      programData={program}
-      animate={true}
-      uniformOverrides={{
-        time,
-        timeScale: 0.0
-      }}
+<div class="app">
+  <aside>
+    <!--
+    <Timeline
+      { timeline }
+      { selectedIndex }
     />
-  </div>
-  <ol>
-    { #each entries as entry, i (entry.metadata.datetime)}
-    <li 
-      bind:this={entryElements[i]}
-      id="{"" + i}"
-      class="offset"
-    >
-      <a 
-        href="#{i}"
-        draggable="false"
+    -->
+    { #if selectedIndex !== -1 }
+      <time
+        datetime="{entries[selectedIndex].metadata.datetime}"
+      >{entries[selectedIndex].metadata.datetime.replace('T', ' ')}</time>
+    { /if }
+  </aside>
+  <header>
+    <h1>
+      Journal artifacts
+    </h1>
+  </header>
+  <main
+    style="
+      --anchorOffset: {100 * anchorOffset}vh;
+    "
+  >
+    <div class="render-core">
+      <ProgramRenderer 
+        programData={program}
+        animate={true}
+        uniformOverrides={{
+          time,
+          timeScale: 0.0
+        }}
+      />
+    </div>
+    <span class="continued">***</span>
+    <ol>
+      { #each entries as entry, i (entry.metadata.datetime)}
+      <li 
+        bind:this={entryElements[i]}
+        id="{"" + i}"
+        class="offset"
       >
-        <Entry
-          { entry }  
-          selected={selectedIndex === i}
-        />
+        <a 
+          href="#{i}"
+          draggable="false"
+        >
+          <Entry
+            { entry }  
+            selected={selectedIndex === i}
+          />
+        </a>
+      </li>
+      { /each }
+    </ol>
+    <span class="continued">***</span>
+  </main>
+  <footer>
+      <span>by:</span> 
+      <a 
+        href="https://palmdrop.site"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        palmdrop
       </a>
-    </li>
-    { /each }
-  </ol>
-</main>
+      <span>font:</span>
+      <a 
+        href="https://velvetyne.fr/fonts/sligoil/"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        Sligoil by Ariel Martín Pérez (Velvetyne Type Foundry)
+      </a>
+  </footer>
+</div>
 
 <style>
   :root {
@@ -193,13 +223,58 @@
     --accent: #1cfb45;
     --highlight: #96edb9;
     */
-    --bg: rgb(0, 0, 0);
-    --fg: #e8ede4;
+    --bg: rgb(1, 1, 1);
+    --fg: #cfd4cc;
     --accent: #35ef73;
     --highlight: #96edb9;
 
-    --font-primary: monospace;
-    --font-mono: monospace;
+    --font-primary: Sligoil;
+    --font-mono: Sligoil;
+  }
+
+  :global(em) {
+    font-style: italic;
+  }
+
+  .app {
+    font-family: var(--font-primary);
+    font-size: clamp(0.75rem, 2vw, 1.35rem);
+
+    background-color: var(--bg);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    background-color: var(--fg);
+    color: var(--bg);
+    width: 100%;
+
+    padding: 0.3em;
+    padding-left: 1em;
+    box-shadow: 0px 0px 2em 2em var(--bg);
+  }
+
+  .continued {
+    font-size: 3em;
+    color: var(--fg);
+    z-index: 2;
+
+    padding: 2em 0em;
+  }
+
+  h1 {
+    font-size: 1em;
+    text-align: left;
+    font-style: normal;
   }
 
   main {
@@ -209,14 +284,15 @@
     align-items: center;
     justify-content: center;
 
-    background-color: var(--bg);
-
-    padding-top: var(--anchorOffset);
-    padding-bottom: calc(91vh - var(--anchorOffset));
+    padding-top: calc(0.5 * var(--anchorOffset));
+    padding-bottom: calc(0.5 * var(--anchorOffset));
 
     color: var(--fg);
+    width: 100%;
+    max-width: 1300px;
 
-    font-family: var(--font-primary);
+    border-left: 1px solid var(--fg);
+    border-right: 1px solid var(--fg);
   }
 
   .offset {
@@ -227,22 +303,29 @@
   ol {
     display: flex;
     flex-direction: column-reverse;
-    width: 100%;
-    max-width: 1200px;
 
     z-index: 1;
   }
 
   aside {
-    display: flex;
-    background-color: var(--bg);
-
     position: fixed;
     bottom: 0;
-    left: 0;
+    right: 0;
 
-    z-index: 100;
-    box-shadow: 0px 0px 50px 50px var(--bg);
+    background-color: var(--fg);
+    color: var(--bg);
+
+    font-size: 1em;
+    z-index: 4;
+    text-align: right;
+
+    box-shadow: 0px 0px 2em 2em var(--bg);
+
+    width: 100%;
+    padding: 0.3em;
+    padding-right: 1em;
+
+    font-family: var(--font-mono);
   }
 
   a:focus {
@@ -253,7 +336,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-10%, -50%);
+    transform: translate(-50%, -50%);
 
     height: 80vh;
     width: 40vh;
@@ -261,7 +344,25 @@
     z-index: 0;
   }
 
-  :global(em) {
-    font-style: italic;
+  footer {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+
+    width: 100%;
+    padding-bottom: 5em;
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: var(--fg);
+
+    z-index: 3;
+    background-color: var(--bg);
+
+    border-top: 1px solid var(--fg);
+  }
+
+  footer a {
+    text-decoration: underline;
   }
 </style>

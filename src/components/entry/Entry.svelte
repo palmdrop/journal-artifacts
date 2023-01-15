@@ -44,6 +44,12 @@
     transition: 0.3s;
 
     position: relative;
+
+    --text-shadow: 
+      0.06em 0.06em 0.08em var(--bg),
+      -0.06em 0.06em 0.08em var(--bg),
+      0.06em -0.06em 0.08em var(--bg),
+      -0.06em -0.06em 0.08em var(--bg);
   }
 
   .datetime {
@@ -57,7 +63,7 @@
     color: var(--bg);
 
     font-family: var(--font-mono);
-    margin-right: 2rem;
+    margin-right: 2em;
   }
 
   .selected .datetime {
@@ -72,6 +78,7 @@
     flex-direction: column;
 
     padding: 1em;
+    font-size: 1.1em;
   }
 
   .content {
@@ -79,11 +86,13 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    font-size: 2rem;
+    font-size: 1.9em;
 
     grid-area: content;
 
-    text-shadow: 0px 0px 3px var(--bg);
+    text-shadow: var(--text-shadow);
+
+    mix-blend-mode: difference;
   }
 
   .note {
@@ -96,7 +105,10 @@
     grid-area: note;
 
     text-transform: lowercase;
-    font-size: 1.1rem;
+    font-style: italic;
+    font-size: 1.0em;
     font-family: var(--font-mono);
+
+    text-shadow: var(--text-shadow);
   }
 </style>

@@ -99,7 +99,7 @@
       const distance = Math.abs(top - element.offsetTop);
       if(distance < anchorSelectionDistance && selectedIndex !== i) {
         selectedIndex = i;
-        history.pushState(null, null, "#" + i);
+        // history.pushState(null, null, "#" + i);
         break;
       }
     }
@@ -260,11 +260,13 @@
 
   :global(strong) {
     font-weight: bold;
+    text-transform: uppercase;
   }
 
   .app {
     font-family: var(--font-primary);
     font-size: clamp(0.75rem, 2vw, 1.35rem);
+    font-weight: normal;
 
     background-color: var(--bg);
 
@@ -377,6 +379,9 @@
 
     height: 80vh;
     width: 40vh;
+
+    min-width: calc(min(500px, 100vw - 2em));
+    min-height: calc(min(1000px, 100vh));
 
     z-index: 0;
   }

@@ -71,8 +71,8 @@ html {
 /* Fengardo Neue */
 @font-face {
     font-family: 'Sligoil';
-    src:    url('/fonts/sligoil/web/Sligoil-Micro.woff') format('woff');
-    src:    url('/fonts/sligoil/web/Sligoil-Micro.woff2') format('woff2');
+    src:    url('fonts/sligoil/web/Sligoil-Micro.woff') format('woff');
+    src:    url('fonts/sligoil/web/Sligoil-Micro.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }

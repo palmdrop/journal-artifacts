@@ -265,7 +265,7 @@
 
   .app {
     font-family: var(--font-primary);
-    font-size: clamp(0.75rem, 2vw, 1.35rem);
+    font-size: clamp(1rem, 2.3vw, 1.35rem);
     font-weight: normal;
 
     background-color: var(--bg);
@@ -327,11 +327,11 @@
 
     color: var(--fg);
     width: 100%;
-    max-width: 1300px;
+    max-width: 1000px;
     min-height: 100vh;
 
-    border-left: 1px solid var(--fg);
-    border-right: 1px solid var(--fg);
+    border-left: 2px solid var(--fg);
+    border-right: 2px solid var(--fg);
   }
 
   .offset {
@@ -377,11 +377,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
 
-    height: 80vh;
-    width: 40vh;
-
-    min-width: calc(min(500px, 100vw - 2em));
-    min-height: calc(min(1000px, 100vh));
+    height: 100vh;
+    width: 998px;
+    max-width: calc(100vw - 2px);
 
     z-index: 0;
   }

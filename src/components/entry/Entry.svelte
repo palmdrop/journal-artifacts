@@ -39,7 +39,7 @@
 
     margin: 0.5em;
 
-    padding: 2em;
+    padding: 2em clamp(0.2em, 2.0vw, 2em);
 
     transition: 0.3s;
 
@@ -80,7 +80,7 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    font-size: 1.6em;
+    font-size: 1.4em;
 
     grid-area: content;
 

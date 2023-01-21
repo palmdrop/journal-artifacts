@@ -1,5 +1,3 @@
-npm run build
-
 rm -r ../palmdrop.github.io/artifacts
 cp -r dist ../palmdrop.github.io/artifacts
 

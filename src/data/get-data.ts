@@ -37,7 +37,6 @@ export const getData = async () => {
     });
 
     return await response.json();
-    // return processData(data)
   } catch (error) {
     console.log(error);
   }

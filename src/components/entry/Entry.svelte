@@ -80,7 +80,7 @@
     flex-grow: 1;
     flex-basis: 0;
 
-    font-size: 1.4em;
+    font-size: clamp(1.3rem, 2.7vw, 1.8rem);
 
     grid-area: content;
 
@@ -100,7 +100,7 @@
 
     text-transform: lowercase;
     font-style: italic;
-    font-size: 1.0em;
+    font-size: 0.9em;
     font-family: var(--font-mono);
 
     text-shadow: var(--text-shadow);

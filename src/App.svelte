@@ -387,11 +387,11 @@
   footer {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 1em;
+    gap: 1.5em;
 
     width: 100%;
-    padding-bottom: 5em;
-    padding-top: 1em;
+    padding-bottom: 7em;
+    padding-top: 3em;
     padding-left: 1em;
     padding-right: 1em;
     color: var(--fg);
